@@ -1,0 +1,40 @@
+with open('Cook_book', 'r', encoding='utf-8') as f:
+    cooking_book = []
+    for i in f:
+      cooking_book += [i.strip()]
+
+cook_book_list = []
+for  e in cooking_book:
+  try:
+      a = e.split('|')
+      ingredient = {'ingredient_name': a[0], 'quantity': a[1], 'measure': a[2]}
+      cook_book_list += [ingredient]
+      
+  except:
+      cook_book_list += [e]
+
+cook_book = {}
+for  i, e in enumerate(cook_book_list):
+  dishes_book = []
+  try:
+     a = int(e)
+     dishes_book += cook_book_list[i+1:i+a+1]
+     cook_book[cook_book_list[i-1]] = dishes_book
+  except:
+     pass
+
+def dish(book, person):
+    full_dishes = {}
+    for i in book:
+        for e, en in cook_book.items():
+            if i == e:
+                for u in en:
+                    qu = u.get('quantity')
+                    name = u.get('ingredient_name')
+                    qu2 = int(qu) * person
+                    u['quantity'] = qu2
+                    del u['ingredient_name']
+                    full_dishes[name] = u
+    return full_dishes
+
+print(dish(['Запеченный картофель', 'Омлет'], 2))
